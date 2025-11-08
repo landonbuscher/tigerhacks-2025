@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "raymath.h": "c",
+        "config.h": "c",
+        "routes.h": "c",
+        "__node_handle": "c"
+    }
+}
