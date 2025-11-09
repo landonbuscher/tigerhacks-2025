@@ -21,14 +21,6 @@ static void draw_left_header(const Rectangle sidebar, const Rectangle frame, int
     DrawTexturePro(logo, src, dst, (Vector2){0,0}, 0.0f, WHITE);
 }
 
-// Generic scroll list drawer. Calls `itemRenderer(index, itemRect, userData)` for each visible item.
-// - frame: scissor/frame rect in screen coords
-// - scrollPtr: pointer to the float scroll offset (will be modified by wheel when mouse over frame)
-// - itemCount: number of items
-// - itemH/itemGap: item height and gap
-// - mouse/wheel: current input state
-// - userData: passed through to itemRenderer
-// - itemRenderer: callback to render each visible item
 static void ScrollList_Draw(Rectangle frame, float *scrollPtr, int itemCount, float itemH, float itemGap, Vector2 mouse, float wheel, Camera2D *camera, void *userData,
                             void (*itemRenderer)(int index, Rectangle itemRect, Camera2D *camera, void *userData)) {
 

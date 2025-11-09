@@ -145,7 +145,7 @@ float get_risk_chance(Risk risk) {
         case RISK_MEDIUM:
             return 0.1f;
         case RISK_HIGH:
-            return 0.2f;
+            return 0.99f; //0.2f
         default:
             return 0.0f;
     }

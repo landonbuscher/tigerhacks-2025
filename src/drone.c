@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// DroneType is defined in include/drone.h — keep implementation-specific details out of this .c
 
 static float FLEET_MEAN_SPEED = 0.0f;
 static float FLEET_MEAN_CAP   = 0.0f;

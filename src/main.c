@@ -37,17 +37,7 @@ int main() {
 
         switch (screen) {
             case GAMESCREEN_TITLE: {
-                // Draw logo scaled (no per-frame resize/load)
-                float logoDestW = GetScreenWidth()*0.8f;
-                float aspect = (float)logo.width / (float)logo.height;
-                Rectangle src = {0,0,(float)logo.width,(float)logo.height};
-                Rectangle dst = {
-                    GetScreenWidth()*0.5f-logoDestW*0.5f,
-                    100,
-                    logoDestW,
-                    logoDestW/aspect
-                };
-                DrawTexturePro(logo, src, dst, (Vector2){0,0}, 0.0f, WHITE);  
+                DrawTexturePro(cover, (Rectangle){0,0,cover.width,cover.height}, (Rectangle){0,0,(float)GetScreenWidth(),(float)GetScreenHeight()}, (Vector2){0,0}, 0.0f, WHITE); 
                 if (IsKeyPressed(KEY_ENTER)) {
                     screen = GAMESCREEN_MAIN;
                 }

@@ -1,3 +1,3 @@
 #include "user.h"
 
-float credits = 600;
+float credits = 6000;
