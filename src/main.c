@@ -20,11 +20,9 @@ int main() {
     camera.zoom = 1.0f;
 
     load_assets();
-    // initialize runtime-managed systems
     drones_init();
     init_planets();
     init_tints();
-    // initialize the global background source rect via the ui helper
     set_background_rectangle((Rectangle){SCREEN_WIDTH/2, SCREEN_HEIGHT/2, SCREEN_WIDTH*2, SCREEN_HEIGHT*2});
 
 
@@ -54,7 +52,6 @@ int main() {
                 break;
             };
             case GAMESCREEN_OVER: {
-                // Draw logo scaled (no per-frame resize/load)
                 float logoDestW = GetScreenWidth()*0.8f;
                 float aspect = (float)logo.width / (float)logo.height;
                 Rectangle src = {0,0,(float)logo.width,(float)logo.height};

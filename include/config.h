@@ -13,3 +13,8 @@
 #define SECONDARY_COLOR (Color){ 23, 23, 23, 255 }
 #define ACCENT_COLOR (Color){ 84, 122, 122, 255 }
 #define SUCCESS_COLOR (Color){ 70, 129, 83, 255 }
+
+extern char announcement_status[256];
+extern Rectangle background_rectangle;
+
+void set_background_rectangle(Rectangle r);

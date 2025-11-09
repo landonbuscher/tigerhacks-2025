@@ -4,18 +4,13 @@ Texture2D logo, background, planet, box, cover;
 Font baloo, baloo2;
 
 void load_assets(void) {
-    // Load image into CPU memory
     logo = LoadTexture("assets/logo_long.png");
     background = LoadTexture("assets/star_background.png");
     cover = LoadTexture("assets/cover.png");
     planet = LoadTexture("assets/planet.png");
     box = LoadTexture("assets/box.png");
-
-    // Load fonts (these already produce GPU textures)
     baloo = LoadFont("assets/Baloo-Regular.ttf");
     baloo2 = LoadFont("assets/BalooBhai2-Regular.ttf");
-
-    // (optional) improve font rendering
     SetTextureFilter(baloo.texture, TEXTURE_FILTER_BILINEAR);
     SetTextureFilter(baloo2.texture, TEXTURE_FILTER_BILINEAR);
 }

@@ -30,21 +30,20 @@ typedef struct {
 char* get_drone_status_string(DroneStatus status);
 
 extern const DroneType DRONE_TYPES[];
-extern Drone *Drones; // heap-allocated fleet array
+extern Drone *Drones;
 extern int num_drones;
 extern int num_drone_types;
-// lifecycle and mutation helpers for the dynamic fleet
+
 void drones_init(void);
 void drones_shutdown(void);
-int drones_add(DroneType type); // returns index of new drone or -1 on failure
+int drones_add(DroneType type); 
 void drones_remove_at(int idx);
 void refuel_drone(int idx);
-void update_fleet_stats(void);
 
-// Fleet stat accessors (do NOT expose internal static variables)
+
 float fleet_get_mean_speed(void);
 float fleet_get_mean_capacity(void);
 float fleet_get_max_range(void);
 int fleet_get_size(void);
 
-#endif // INTERSTELLAR_DRONE_H
+#endif 

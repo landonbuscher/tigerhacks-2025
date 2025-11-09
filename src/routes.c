@@ -57,7 +57,6 @@ void init_tints() {
     }
 }
 
-// Dynamic array for Routes
 Route *Routes = NULL;
 int num_routes = 0;
 static int routes_capacity = 0;
@@ -101,7 +100,6 @@ int routes_add(Route r) {
 
 void routes_remove(int idx) {
     if (idx < 0 || idx >= num_routes) return;
-    // If route had owned resources, free them here (none currently)
     if (idx < num_routes - 1) {
         memmove(&Routes[idx], &Routes[idx + 1], (num_routes - idx - 1) * sizeof(Route));
     }
@@ -110,21 +108,19 @@ void routes_remove(int idx) {
 
 void routes_mark_completed(int idx) {
     if (idx < 0 || idx >= num_routes) return;
-    // We'll use progress == 2 to indicate "completed" (progress 0/1 used already)
     Routes[idx].progress = 2;
 }
 
 void routes_purge_completed(void) {
     int write = 0;
     for (int read = 0; read < num_routes; ++read) {
-        if (Routes[read].progress == 2) continue; // completed -> drop
+        if (Routes[read].progress == 2) continue;
         if (write != read) Routes[write] = Routes[read];
         write++;
     }
     num_routes = write;
 }
 
-// Keep the helper functions that operate on Planets and risk
 Risk get_highest_risk(Planet p1, Planet p2) {
     return (p1.risk > p2.risk) ? p1.risk : p2.risk;
 }
@@ -145,7 +141,7 @@ float get_risk_chance(Risk risk) {
         case RISK_MEDIUM:
             return 0.1f;
         case RISK_HIGH:
-            return 0.99f; //0.2f
+            return 0.2f;
         default:
             return 0.0f;
     }
@@ -169,23 +165,19 @@ Route generate_random_route(void) {
     r.drone = NULL;
     r.id = (num_routes > 0) ? (Routes[num_routes - 1].id + 1) : 1;
 
-    // Scale route difficulty with fleet capability: distance uses fleet max range,
-    // cargo scales with mean capacity and fleet size, and price scales with risk and fleet supply.
     float max_range = fleet_get_max_range();
     float mean_cap = fleet_get_mean_capacity();
     int fleet_size = fleet_get_size();
 
-    if (max_range <= 0.0f) max_range = 75.0f; // sensible default if no drones yet
+    if (max_range <= 0.0f) max_range = 75.0f; 
     if (mean_cap <= 0.0f) mean_cap = 20.0f;
 
     r.distance = sqrt(pow((origin.position.x-destination.position.x),2)+pow((origin.position.y-destination.position.y),2));
 
-    // cargo: base on mean capacity, random factor, and fleet size multiplier (small incremental growth)
     r.cargo = (int)(mean_cap * (0.5f + (rand() % 61) / 100.0f));
     if (r.cargo < 1) r.cargo = 1;
 
-    // price per unit: base on risk and some variation; slightly increase when fleet is larger to keep payouts meaningful
-    float base_price = get_risk_chance(get_highest_risk(origin, destination)) * 80.0f + (rand() % 10); // +/-10s
+    float base_price = get_risk_chance(get_highest_risk(origin, destination)) * 80.0f + (rand() % 10); 
     float price_mult = 1.0f + (fleet_size > 0 ? fleet_size * 0.03f : 0.0f);
     r.price_per_unit = (int)(base_price * price_mult);
     r.time_remaining = 0.0f;

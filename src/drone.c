@@ -8,66 +8,24 @@ static float FLEET_MEAN_CAP   = 0.0f;
 static float FLEET_MAX_CAP    = 0.0f;
 static float FLEET_MAX_RANGE  = 0.0f;
 
-void update_fleet_stats(void) {
-    if (num_drones == 0) {
-        FLEET_MEAN_SPEED = 0.0f;
-        FLEET_MEAN_CAP = 0.0f;
-        FLEET_MAX_CAP = 0.0f;
-        FLEET_MAX_RANGE = 0.0f;
-        return;
-    }
-
-    float total_speed = 0.0f;
-    float total_cap = 0.0f;
-    float max_cap = 0.0f;
-    float max_range = 0.0f;
-
-    for (int i = 0; i < num_drones; ++i) {
-        total_speed += Drones[i].type.speed;
-        total_cap += Drones[i].type.cargo_capacity;
-        if (Drones[i].type.cargo_capacity > max_cap) {
-            max_cap = Drones[i].type.cargo_capacity;
-        }
-        float range = Drones[i].type.fuel_capacity / Drones[i].type.fuel_burn;
-        if (range > max_range) {
-            max_range = range;
-        }
-    }
-
-    FLEET_MEAN_SPEED = total_speed / num_drones;
-    FLEET_MEAN_CAP = total_cap / num_drones;
-    FLEET_MAX_CAP = max_cap;
-    FLEET_MAX_RANGE = max_range;
-}
-
-// Accessors for other modules
 float fleet_get_mean_speed(void) { return FLEET_MEAN_SPEED; }
 float fleet_get_mean_capacity(void) { return FLEET_MEAN_CAP; }
 float fleet_get_max_range(void) { return FLEET_MAX_RANGE; }
 int fleet_get_size(void) { return num_drones; }
 
 const DroneType DRONE_TYPES[] = {
-    // Scout: light & quick, low cargo
     {"Scout Mk I",        550, 5.0f, 4.2f,  20,  300.0f},
     {"Scout Mk II",       700, 10.0f, 5.25f, 25,  360.0f},
     {"Scout Mk III",      850, 15.0f, 6.30f, 30,  420.0f},
-
-    // Courier: balanced all-rounders
     {"Courier Mk I",      700, 7.0f, 5.00f, 60,  400.0f},
     {"Courier Mk II",     900, 13.0f, 6.40f, 80,  520.0f},
     {"Courier Mk III",   1050, 18.0f, 7.60f,100,  600.0f},
-
-    // Hauler: big cargo, modest speed, very efficient endurance
     {"Hauler Mk I",       850, 3.0f, 5.00f,200,  700.0f},
     {"Hauler Mk II",     1100, 5.0f, 6.60f,300,  900.0f},
     {"Hauler Mk III",    1500, 8.0f, 8.90f,450, 1200.0f},
-
-    // Ranger: long-range endurance specialists
     {"Ranger Mk I",       900, 5.0f, 4.80f, 80,  800.0f},
     {"Ranger Mk II",     1050, 9.0f, 5.70f, 90, 1000.0f},
     {"Ranger Mk III",    1300, 12.0f, 6.60f,100, 1300.0f},
-
-    // Speedster: very fast, fuel-hungry, moderate cargo
     {"Speedster Mk I",   1100, 20.0f, 8.40f, 40,  500.0f},
     {"Speedster Mk II",  1350, 25.0f,10.10f, 50,  650.0f},
     {"Speedster Mk III", 1550, 30.0f,11.60f, 60,  750.0f},
@@ -75,13 +33,13 @@ const DroneType DRONE_TYPES[] = {
 
 int num_drone_types = 15;
 
-// Runtime-managed fleet
+
 Drone *Drones = NULL;
 int num_drones = 0;
 static int drones_capacity = 0;
 
 void drones_init(void) {
-    // start with a small initial capacity
+
     drones_capacity = 8;
     Drones = malloc(sizeof(Drone) * drones_capacity);
     if (!Drones) {
@@ -89,13 +47,13 @@ void drones_init(void) {
         drones_capacity = 0;
         return;
     }
-    // no initial drones by default
+
     num_drones = 0;
 }
 
 int drones_add(DroneType type) {
     if (!Drones) drones_init();
-    if (!Drones) return -1; // allocation failed
+    if (!Drones) return -1;
 
     if (num_drones + 1 > drones_capacity) {
         int newcap = drones_capacity * 2;
@@ -106,7 +64,6 @@ int drones_add(DroneType type) {
     }
 
     Drone d;
-    // Populate a temporary and memcpy it into the array to avoid any strict-assignment issues
     d.type = type;
     d.id = (num_drones > 0) ? (Drones[num_drones - 1].id + 1) : 1;
     d.current_fuel = type.fuel_capacity;
@@ -125,7 +82,6 @@ void drones_remove_at(int idx) {
         memmove(&Drones[idx], &Drones[idx + 1], sizeof(Drone) * (num_drones - idx - 1));
     }
     num_drones--;
-    // Optionally shrink capacity (not necessary now)
 }
 
 void drones_shutdown(void) {
