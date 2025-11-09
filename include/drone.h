@@ -30,7 +30,7 @@ typedef struct {
 char* get_drone_status_string(DroneStatus status);
 
 extern const DroneType DRONE_TYPES[];
-extern Drone *Drones;
+extern Drone *Drones; 
 extern int num_drones;
 extern int num_drone_types;
 
@@ -39,7 +39,7 @@ void drones_shutdown(void);
 int drones_add(DroneType type); 
 void drones_remove_at(int idx);
 void refuel_drone(int idx);
-
+void update_fleet_stats(void);
 
 float fleet_get_mean_speed(void);
 float fleet_get_mean_capacity(void);

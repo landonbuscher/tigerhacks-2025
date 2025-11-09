@@ -8,6 +8,38 @@ static float FLEET_MEAN_CAP   = 0.0f;
 static float FLEET_MAX_CAP    = 0.0f;
 static float FLEET_MAX_RANGE  = 0.0f;
 
+void update_fleet_stats(void) {
+    if (num_drones == 0) {
+        FLEET_MEAN_SPEED = 0.0f;
+        FLEET_MEAN_CAP = 0.0f;
+        FLEET_MAX_CAP = 0.0f;
+        FLEET_MAX_RANGE = 0.0f;
+        return;
+    }
+
+    float total_speed = 0.0f;
+    float total_cap = 0.0f;
+    float max_cap = 0.0f;
+    float max_range = 0.0f;
+
+    for (int i = 0; i < num_drones; ++i) {
+        total_speed += Drones[i].type.speed;
+        total_cap += Drones[i].type.cargo_capacity;
+        if (Drones[i].type.cargo_capacity > max_cap) {
+            max_cap = Drones[i].type.cargo_capacity;
+        }
+        float range = Drones[i].type.fuel_capacity / Drones[i].type.fuel_burn;
+        if (range > max_range) {
+            max_range = range;
+        }
+    }
+
+    FLEET_MEAN_SPEED = total_speed / num_drones;
+    FLEET_MEAN_CAP = total_cap / num_drones;
+    FLEET_MAX_CAP = max_cap;
+    FLEET_MAX_RANGE = max_range;
+}
+
 float fleet_get_mean_speed(void) { return FLEET_MEAN_SPEED; }
 float fleet_get_mean_capacity(void) { return FLEET_MEAN_CAP; }
 float fleet_get_max_range(void) { return FLEET_MAX_RANGE; }
