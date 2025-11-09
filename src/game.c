@@ -43,8 +43,7 @@ void update_game(float dt) {
             }
 
             if (removed_idx >= 0) {
-                memmove(&Drones[removed_idx], &Drones[removed_idx + 1], sizeof(Drone) * (num_drones - removed_idx - 1));
-                num_drones--;
+                drones_remove_at(removed_idx);
             }
 
             if (Routes[i].cargo == 0) {
@@ -63,12 +62,12 @@ void update_game(float dt) {
 
         if (Routes[i].time_remaining <= 0.0f) {
             if (rand() % 100 < (int)(get_risk_chance(get_highest_risk(Routes[i].origin, Routes[i].destination)) * 100.0f)) {
-            snprintf(
-                announcement_status, 256,
-                "Delivery failed! Drone %d lost between %s and %s.",
-                Routes[i].drone ? Routes[i].drone->id : -1,
-                Routes[i].origin.name, Routes[i].destination.name
-            );               
+                snprintf(
+                    announcement_status, 256,
+                    "Delivery failed! Drone %d lost between %s and %s.",
+                    Routes[i].drone ? Routes[i].drone->id : -1,
+                    Routes[i].origin.name, Routes[i].destination.name
+                );               
                 int removed_idx = -1;
                 for (int d = 0; d < num_drones; ++d) {
                     if (&Drones[d] == Routes[i].drone) {
@@ -78,8 +77,7 @@ void update_game(float dt) {
                 }
 
                 if (removed_idx >= 0) {
-                    memmove(&Drones[removed_idx], &Drones[removed_idx + 1], sizeof(Drone) * (num_drones - removed_idx - 1));
-                    num_drones--;
+                    drones_remove_at(removed_idx);
                 }
 
                 if (num_drones<=0) screen=GAMESCREEN_OVER;

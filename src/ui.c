@@ -256,7 +256,7 @@ void draw_ui(Camera2D *camera) {
         left_sidebar.width*0.10f,
         left_sidebar.height*0.20f,
         left_sidebar.width*0.80f,
-        left_sidebar.height*0.70f
+        left_sidebar.height*0.65f
     };
     Rectangle routes_frame = {
         right_sidebar.x + right_sidebar.width*0.10f,

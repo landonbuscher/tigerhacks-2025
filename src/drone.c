@@ -1,6 +1,7 @@
 #include "drone.h"
 #include <stdlib.h>
 #include <string.h>
+#include "routes.h"
 
 
 static float FLEET_MEAN_SPEED = 0.0f;
@@ -65,7 +66,6 @@ const DroneType DRONE_TYPES[] = {
 
 int num_drone_types = 15;
 
-
 Drone *Drones = NULL;
 int num_drones = 0;
 static int drones_capacity = 0;
@@ -112,6 +112,13 @@ void drones_remove_at(int idx) {
     Drones[idx] = (Drone){0};
     if (idx < num_drones - 1) {
         memmove(&Drones[idx], &Drones[idx + 1], sizeof(Drone) * (num_drones - idx - 1));
+    }
+    if (idx+1<num_drones && Drones[idx+1].status==DRONE_STATUS_DELIVERING) {
+        for (int i=0; i<num_routes; i++) {
+            if (Routes[i].drone==&Drones[idx+1]) {
+                Routes[i].drone = &Drones[idx];
+            }
+        }
     }
     num_drones--;
 }

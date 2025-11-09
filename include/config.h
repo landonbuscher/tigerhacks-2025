@@ -2,8 +2,8 @@
 
 #include "raylib.h"
 
-#define SCREEN_WIDTH 1920
-#define SCREEN_HEIGHT 1080
+#define SCREEN_WIDTH 1500
+#define SCREEN_HEIGHT 800
 #define FUEL_COST_PER_UNIT 0.5f
 #define ROUTE_GENERATION_INTERVAL 10.0f
 #define MAX_ROUTES 10
